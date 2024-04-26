@@ -24,7 +24,7 @@ module {
      */
     public func toNat(x: Int) : Nat {
         if (x < 0){
-            return Nat.sub(Nat256Max, toNat(Int.neq(x)));
+            return Nat.sub(Nat256Max, toNat(Int.neg(x)));
         };
         var intArr: [Int64] = BitwiseInt.toIntArr(x, 8);
         var natVal: Nat = 0;
