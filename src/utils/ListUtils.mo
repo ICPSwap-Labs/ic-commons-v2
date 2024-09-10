@@ -48,7 +48,7 @@ module {
                 newArrayBuffer.add(t);
             };
         };
-        return newArrayBuffer.toArray();
+        return Buffer.toArray(newArrayBuffer);
     };
 
     public func listRange<T>(list: List.List<T>, offset: Nat, limit: Nat) : List.List<T> {
@@ -67,7 +67,7 @@ module {
     public func arrayRange<T>(arr: [T], offset: Nat, limit: Nat) : [T] {
         let size: Nat = arr.size();
         var newArrayBuffer: Buffer.Buffer<T> = Buffer.Buffer<T>(0);
-        if(size == 0) { return newArrayBuffer.toArray(); };
+        if(size == 0) { return Buffer.toArray(newArrayBuffer); };
         var end: Nat = offset + limit - 1;
         if (end > Nat.sub(size, 1)) {
             end := size - 1;
@@ -77,7 +77,7 @@ module {
                 newArrayBuffer.add(arr[i]);
             };
         };
-        return newArrayBuffer.toArray();
+        return Buffer.toArray(newArrayBuffer);
     };
  
     public func sort<A>(xs : [A], cmp : (A, A) -> Order.Order) : [A] {

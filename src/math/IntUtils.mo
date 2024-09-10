@@ -41,7 +41,7 @@ module {
             arr.add(remainder);
             _x := bitshiftRight(_x, bit);
         };
-        return arr.toArray();
+        return Buffer.toArray(arr);
     };
     private func ternary(e: Bool, x: Int, y: Int) : Int {
         if (e) {
