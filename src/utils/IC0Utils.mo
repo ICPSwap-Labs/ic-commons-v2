@@ -2,7 +2,6 @@ import Principal "mo:base/Principal";
 import Nat "mo:base/Nat";
 import List "mo:base/List";
 import Buffer "mo:base/Buffer";
-import ListUtils "./ListUtils";
 import CollectionUtils "./CollectionUtils";
 
 module {

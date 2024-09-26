@@ -37,11 +37,11 @@ function text_ic0()
     dfx canister call TestIC0 canister_status "(principal \"$testId\")"
 
     echo "==> add controller by canister"
-    dfx canister call TestIC0 update_settings_add_controller "(principal \"$testId\", vec {principal \"fe7u5-l27r2-mnzgo-hb2l7-otqjh-3drik-jry4q-hrygl-o4mgf-yl4fp-wqe\";})"
+    dfx canister call TestIC0 update_settings_add_controller "(principal \"$testId\", vec {principal \"aaaaa-aa\";})"
     dfx canister call TestIC0 canister_status "(principal \"$testId\")"
 
     echo "==> remove controller by canister"
-    dfx canister call TestIC0 update_settings_remove_controller "(principal \"$testId\", vec {principal \"fe7u5-l27r2-mnzgo-hb2l7-otqjh-3drik-jry4q-hrygl-o4mgf-yl4fp-wqe\";})"
+    dfx canister call TestIC0 update_settings_remove_controller "(principal \"$testId\", vec {principal \"aaaaa-aa\";})"
     dfx canister call TestIC0 canister_status "(principal \"$testId\")"
 }
 
