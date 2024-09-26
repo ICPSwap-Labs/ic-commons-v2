@@ -1,7 +1,9 @@
 import Principal "mo:base/Principal";
 import Nat "mo:base/Nat";
 import List "mo:base/List";
+import Buffer "mo:base/Buffer";
 import ListUtils "./ListUtils";
+import CollectionUtils "./CollectionUtils";
 
 module {
 
@@ -107,11 +109,10 @@ module {
         delete_canister : (delete_canister_args) -> async ();
     };
 
-    public func update_settings_add_controller(cid : Principal, controller : Principal) : async () {
+    public func update_settings_add_controller(cid : Principal, controllers : [Principal]) : async () {
         var result = await ic00.canister_status({ canister_id = cid });
         var settings = result.settings;
-        var controllers : [Principal] = settings.controllers;
-        var controllerList = List.append(List.fromArray([controller]), List.fromArray(controllers));
+        var controllerList = List.append(List.fromArray(settings.controllers), List.fromArray(controllers));
         await ic00.update_settings({
             canister_id = cid; 
             settings = {
@@ -126,15 +127,19 @@ module {
         });
     };
 
-    public func update_settings_remove_controller(cid : Principal, controller : Principal) : async () {
+    public func update_settings_remove_controller(cid : Principal, controllers : [Principal]) : async () {
         var result = await ic00.canister_status({ canister_id = cid });
         var settings = result.settings;
-        var controllers : [Principal] = settings.controllers;
-        controllers := ListUtils.arrayRemove(controllers, controller, Principal.equal);
+        let buffer: Buffer.Buffer<Principal> = Buffer.Buffer<Principal>(0);
+        for (it in settings.controllers.vals()) {
+            if (not CollectionUtils.arrayContains<Principal>(controllers, it, Principal.equal)) {
+                buffer.add(it);
+            };
+        };
         await ic00.update_settings({
             canister_id = cid; 
             settings = {
-                controllers = ?controllers;
+                controllers = ?Buffer.toArray<Principal>(buffer);
                 compute_allocation = null;
                 memory_allocation = null;
                 freezing_threshold = null;

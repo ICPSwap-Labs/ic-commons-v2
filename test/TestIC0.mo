@@ -15,12 +15,12 @@ actor TestIC0 {
         await IC0Utils.stop_canister(cid);
     };
 
-    public func update_settings_add_controller(cid : Principal, controller : Principal) : async () {
-        await IC0Utils.update_settings_add_controller(cid, controller);
+    public func update_settings_add_controller(cid : Principal, controllers : [Principal]) : async () {
+        await IC0Utils.update_settings_add_controller(cid, controllers);
     };
 
-    public func update_settings_remove_controller(cid : Principal, controller : Principal) : async () {
-        await IC0Utils.update_settings_remove_controller(cid, controller);
+    public func update_settings_remove_controller(cid : Principal, controllers : [Principal]) : async () {
+        await IC0Utils.update_settings_remove_controller(cid, controllers);
     };
 
 };
