@@ -3,6 +3,10 @@
         "Test": {
             "main": "./test/Test.mo",
             "type": "motoko"
+        },
+        "TestIC0": {
+            "main": "./test/TestIC0.mo",
+            "type": "motoko"
         }
     },
     "defaults": {
@@ -10,7 +14,6 @@
             "packtool": "vessel sources"
         }
     },
-    "dfx": "0.19.0",
     "networks": {
         "local": {
             "bind": "127.0.0.1:8000",
