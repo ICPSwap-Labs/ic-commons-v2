@@ -2,6 +2,7 @@ import Principal "mo:base/Principal";
 import Nat "mo:base/Nat";
 import List "mo:base/List";
 import Buffer "mo:base/Buffer";
+import Cycles "mo:base/ExperimentalCycles";
 import CollectionUtils "./CollectionUtils";
 
 module {
@@ -97,6 +98,9 @@ module {
     public type delete_canister_args = {
         canister_id : Principal;
     };
+    public type deposit_cycles_args = {
+        canister_id : Principal;
+    };
 
     let ic00 = actor "aaaaa-aa" : actor {
         create_canister : (create_canister_args) -> async (create_canister_result);
@@ -106,6 +110,12 @@ module {
         canister_status : (canister_status_args) -> async (canister_status_result);
         canister_info : (canister_info_args) -> async (canister_info_result);
         delete_canister : (delete_canister_args) -> async ();
+        deposit_cycles : (deposit_cycles_args) -> async ();
+    };
+
+    public func create_canister(settings : ? canister_settings, sender_canister_version : ? Nat64, amount : Nat) : async (create_canister_result) {
+        Cycles.add<system>(amount);
+        await ic00.create_canister({ settings = settings; sender_canister_version = sender_canister_version; });
     };
 
     public func update_settings_add_controller(cid : Principal, controllers : [Principal]) : async () {
@@ -159,6 +169,11 @@ module {
 
     public func delete_canister(cid : Principal) : async () {
         await ic00.delete_canister({ canister_id = cid; });
+    };
+
+    public func deposit_cycles(cid : Principal, amount : Nat) : async () {
+        Cycles.add<system>(amount);
+        await ic00.deposit_cycles({ canister_id = cid; });
     };
 
     public func canister_status(cid : Principal) : async canister_status_result {
