@@ -101,6 +101,26 @@ module {
     public type deposit_cycles_args = {
         canister_id : Principal;
     };
+    
+    public type canister_install_mode = {
+        #install;
+        #reinstall;
+        #upgrade : ? {
+            skip_pre_upgrade : ? Bool;
+            wasm_memory_persistence : ? {
+                #keep;
+                #replace;
+            };
+        };
+    };
+
+    public type install_code_args = {
+        mode : canister_install_mode;
+        canister_id : Principal;
+        wasm_module : Blob;
+        arg : Blob;
+        sender_canister_version : ? Nat64;
+    };
 
     let ic00 = actor "aaaaa-aa" : actor {
         create_canister : (create_canister_args) -> async (create_canister_result);
@@ -111,6 +131,7 @@ module {
         canister_info : (canister_info_args) -> async (canister_info_result);
         delete_canister : (delete_canister_args) -> async ();
         deposit_cycles : (deposit_cycles_args) -> async ();
+        install_code : (install_code_args) -> async ();
     };
 
     public func create_canister(settings : ? canister_settings, sender_canister_version : ? Nat64, amount : Nat) : async (create_canister_result) {
@@ -178,6 +199,16 @@ module {
 
     public func canister_status(cid : Principal) : async canister_status_result {
         await ic00.canister_status({ canister_id = cid });
+    };
+
+    public func installCode(canisterId : Principal, arg : Blob, wasmModule : Blob, mode : canister_install_mode) : async () {
+        await ic00.install_code({
+            arg = arg;
+            wasm_module = wasmModule;
+            mode = mode;
+            canister_id = canisterId;
+            sender_canister_version = null;
+        });
     };
 
     public func getControllers(cid : Principal) : async [Principal] {
