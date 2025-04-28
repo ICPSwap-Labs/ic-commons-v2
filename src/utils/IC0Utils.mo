@@ -201,7 +201,7 @@ module {
         await ic00.canister_status({ canister_id = cid });
     };
 
-    public func installCode(canisterId : Principal, arg : Blob, wasmModule : Blob, mode : canister_install_mode) : async () {
+    public func install_code(canisterId : Principal, arg : Blob, wasmModule : Blob, mode : canister_install_mode) : async () {
         await ic00.install_code({
             arg = arg;
             wasm_module = wasmModule;
